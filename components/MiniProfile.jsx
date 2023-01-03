@@ -8,7 +8,7 @@ function MiniProfile() {
     <div className="flex items-center justify-between mt-14 ml-10">
       <div className="relative w-16 h-16  flex-shrink-0 cursor-pointer">
         <Image
-          src="/images/person-unknown.jpg"
+          src={session?.user?.image}
           alt="insta"
           fill
           object-fit="contain"

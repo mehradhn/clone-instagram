@@ -1,37 +1,40 @@
 import NextAuth from "next-auth";
-import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import { SupabaseAdapter } from "@next-auth/supabase-adapter";
-import { Jwt } from "jsonwebtoken";
+import GithubProvider from "next-auth/providers/github";
+import { v4 as uuidv4 } from "uuid";
 export const authOptions = {
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
-  }),
-  callbacks: {
-    async session({ session, user }) {
-      const signingSecret = process.env.SUPABASE_JWT_SECRET;
-      if (signingSecret) {
-        const payload = {
-          aud: "authenticated",
-          exp: Math.floor(new Date(session.expires).getTime() / 1000),
-          sub: user.id,
-          email: user.email,
-          role: "authenticated",
-        };
-        session.supabaseAccessToken = Jwt.sign(payload, signingSecret);
-      }
-      return session;
-    },
-  },
-
   // Configure one or more authentication providers
   providers: [
+    //
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    // }),
+    // ...add more providers here
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
     }),
-    // ...add more providers here
   ],
-  secret: process.env.JWT_SECERET,
+  adapter: SupabaseAdapter({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+  }),
+  pages: {
+    signIn: "/auth/signin",
+  },
+
+  callbacks: {
+    async session({ session, token, user }) {
+      session.user.username = session.user.name
+        .split(" ")
+        .join("")
+        .toLowerCase();
+      session.user.id = uuidv4();
+      return session;
+    },
+  },
 };
+
 export default NextAuth(authOptions);

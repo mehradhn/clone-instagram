@@ -1,8 +1,12 @@
 import React from "react";
-
-function PlusCircle(props) {
+import { useSession } from "next-auth/react";
+import { modalState } from "../../atoms/modalAtom.js";
+import { useRecoilState } from "recoil";
+function PlusCircle({ className, onClick }) {
+  const [open, setOpen] = useRecoilState(modalState);
+  console.log(open);
   return (
-    <div className={props.className}>
+    <div onClick={onClick} className={className}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

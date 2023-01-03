@@ -7,7 +7,14 @@ import MenuIcon from "../public/icons/MenuIcon";
 import PaperAirPlane from "../public/icons/PaperAirPlane";
 import PlusCircle from "../public/icons/PlusCircle";
 import UserGroup from "../public/icons/UserGroup";
+import { useSession, signIn } from "next-auth/react";
+import { modalState } from "../atoms/modalAtom";
+import { useRecoilState } from "recoil";
 function Header() {
+  const { data: session } = useSession();
+  const [open, setOpen] = useRecoilState(modalState);
+  // console.log(session?.user?.image);
+  // console.log(open);
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
       <div className="flex items-center justify-between mx-5 xl:mx-auto max-w-5xl">
@@ -42,27 +49,35 @@ function Header() {
         <div className="flex items-center justify-end space-x-4">
           <HomeIcon className="navBtn" />
           <MenuIcon className="w-6 h-6 md:hidden cursor-pointer" />
-          <div className="navBtn relative">
-            <PaperAirPlane className="navBtn -rotate-22.5" />
-            <div
-              className="absolute -top-2 -right-2 text-sm
+          {session ? (
+            <>
+              <div className="navBtn relative">
+                <PaperAirPlane className="navBtn -rotate-22.5" />
+                <div
+                  className="absolute -top-2 -right-2 text-sm
             bg-red-500 w-5 h-5 animate-pulse text-white rounded-full flex items-center justify-center"
-            >
-              3
-            </div>
-          </div>
-          <PlusCircle className="navBtn" />
-          <UserGroup className="navBtn" />
-          <Heart className="navBtn" />
-          <div className="relative w-10 h-10  flex-shrink-0 cursor-pointer">
-            <Image
-              src="/images/person-unknown.jpg"
-              alt="insta"
-              fill
-              object-fit="contain"
-              className="h-10 rounded-full cursor-pointer"
-            />
-          </div>
+                >
+                  3
+                </div>
+              </div>
+              <PlusCircle onClick={() => setOpen(true)} className="navBtn" />
+              <UserGroup className="navBtn" />
+              <Heart className="navBtn" />
+              <div className="relative w-10 h-10  flex-shrink-0 cursor-pointer">
+                {session && (
+                  <Image
+                    src={session?.user?.image}
+                    alt="insta"
+                    fill
+                    object-fit="contain"
+                    className="h-10 rounded-full cursor-pointer"
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <button onClick={signIn}>SIGIN-IN</button>
+          )}
         </div>
       </div>
     </div>

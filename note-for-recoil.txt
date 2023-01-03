@@ -1,0 +1,27 @@
+first: 
+    install recoil
+
+second:
+    import { RecoilRoot } from "recoil" then wrap  Component
+
+third:
+    create atom directory in main root and put your state in there
+
+fourth:
+    ctreate js file(like modalAtom) and import { atom } from "recoil";
+
+fifth:
+    in directory(modalAtom)
+            export const modalState = atom({
+                key:"modalState",
+                default:false
+            })
+
+sixth:
+    import modalState and  import { useRecoilState } from "recoil" where you want to use it.
+
+
+seventh:
+    in this app we want to manage modal state globally so, we define like this
+    const [open, setOpen] = useRecoilState(modalState);
+
