@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.7",
+    "@heroicons/react": "^1.0.6",
     "@next-auth/supabase-adapter": "^0.2.1",
     "@next/font": "13.1.0",
     "@supabase/supabase-js": "^2.2.2",
@@ -22,6 +23,7 @@
     "next-auth": "^4.18.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-moment": "^1.1.2",
     "recoil": "^0.7.6",
     "uuid": "^9.0.0"
   },

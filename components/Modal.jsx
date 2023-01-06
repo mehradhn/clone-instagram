@@ -4,16 +4,28 @@ import { Transition } from "@headlessui/react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import CameraIcon from "../public/icons/CameraIcon";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "../firebase";
+import { useSession } from "next-auth/react";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { async } from "@firebase/util";
 function Modal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef(null);
   const captionRef = useRef(null);
+  const { data: session } = useSession();
 
   //   for preview Image before Upload
   const addImageToPost = (e) => {
-    const reader = FileReader();
+    const reader = new FileReader();
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
     }
@@ -23,6 +35,24 @@ function Modal() {
   const uploadPost = async () => {
     if (loading) return;
     setLoading(true);
+    const docRef = await addDoc(collection(db, "posts"), {
+      username: session.user.username,
+      caption: captionRef.current.value,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+    const imageRef = ref(storage, `posts/${docRef}/image`);
+    await uploadString(imageRef, selectedFile, "data_url").then(
+      async (snapshot) => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      }
+    );
+    setOpen(false);
+    setLoading(false);
+    setSelectedFile(null);
   };
 
   return (

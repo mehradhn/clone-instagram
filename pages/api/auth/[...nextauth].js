@@ -17,10 +17,10 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
-  }),
+  // adapter: SupabaseAdapter({
+  //   url: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  //   secret: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+  // }),
   pages: {
     signIn: "/auth/signin",
   },

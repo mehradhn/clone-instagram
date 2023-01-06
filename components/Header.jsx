@@ -13,8 +13,7 @@ import { useRecoilState } from "recoil";
 function Header() {
   const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
-  // console.log(session?.user?.image);
-  // console.log(open);
+
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
       <div className="flex items-center justify-between mx-5 xl:mx-auto max-w-5xl">
@@ -52,7 +51,7 @@ function Header() {
           {session ? (
             <>
               <div className="navBtn relative">
-                <PaperAirPlane className="navBtn -rotate-22.5" />
+                <PaperAirPlane className="navBtn -rotate-45" />
                 <div
                   className="absolute -top-2 -right-2 text-sm
             bg-red-500 w-5 h-5 animate-pulse text-white rounded-full flex items-center justify-center"

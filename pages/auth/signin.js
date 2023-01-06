@@ -6,7 +6,7 @@ function signIn({ providers }) {
   return (
     <>
       <Header />
-      <div className="flex flex-col -mt-56 px-14 text-center items-center justify-center min-h-screen py-2 ">
+      <div className="flex flex-col mt-5 px-14 text-center items-center justify-center min-h-screen py-2 ">
         <img className="w-80" src="/images/text-logo.png" alt="" />
         <p>Instagram Clone</p>
         <div className="mt-40">
